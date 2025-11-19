@@ -4,6 +4,7 @@ python-interface
 pyfiglet<1
 influxdb
 influxdb-client[ciso]
-beacontools[scan]
+beacontools[scan]==2.0.2
 azure-iot-device==3.0.0b2
-pybluez
+pybluez @ git+https://github.com/AcrossTheCloud/pybluez@82cbba8a1ebd4c1e3442dfafd8581d58c50fa39e
+
