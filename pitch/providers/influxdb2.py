@@ -26,7 +26,9 @@ class InfluxDb2CloudProvider(CloudProviderBase):
     def update(self, tilt_status: TiltStatus):
         self.batch.append(self.get_point(tilt_status))
         if len(self.batch) < self.config.influxdb_batch_size:
+            print("Batch size not met yet, skipping.")
             return
+        print("Sending data to influxdb2")
         # Batch size has been met, update and clear
         self.write_api.write(
             bucket=self.config.influxdb2_bucket,
