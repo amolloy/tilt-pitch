@@ -1,12 +1,11 @@
 from ..models import TiltStatus
 from ..abstractions import CloudProviderBase
 from ..configuration import PitchConfig
-from interface import implements
 import logging
 import logging.handlers
 
 
-class FileCloudProvider(implements(CloudProviderBase)):
+class FileCloudProvider(CloudProviderBase):
 
     def __init__(self, config: PitchConfig):
         self.config = config

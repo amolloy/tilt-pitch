@@ -1,7 +1,7 @@
-from interface import Interface
 from ..models import TiltStatus
+from abc import ABC, abstractmethod
 
-class CloudProviderBase(Interface):
+class CloudProviderBase(ABC):
 
     def start(self):
         pass

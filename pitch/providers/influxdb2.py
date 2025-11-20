@@ -1,12 +1,11 @@
 from ..models import TiltStatus
 from ..abstractions import CloudProviderBase
 from ..configuration import PitchConfig
-from interface import implements
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS, WritePrecision
 
 
-class InfluxDb2CloudProvider(implements(CloudProviderBase)):
+class InfluxDb2CloudProvider(CloudProviderBase):
 
     def __init__(self, config: PitchConfig):
         self.config = config

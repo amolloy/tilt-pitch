@@ -9,12 +9,11 @@ from ..models import TiltStatus
 from ..abstractions import CloudProviderBase
 from ..configuration import PitchConfig
 from ..rate_limiter import DeviceRateLimiter
-from interface import implements
 import requests
 import json
 
 
-class GrainfatherCustomStreamCloudProvider(implements(CloudProviderBase)):
+class GrainfatherCustomStreamCloudProvider(CloudProviderBase):
 
     def __init__(self, config: PitchConfig):
         self.color_urls = GrainfatherCustomStreamCloudProvider._normalize_color_keys(config.grainfather_custom_stream_urls)
