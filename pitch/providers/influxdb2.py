@@ -29,12 +29,31 @@ class InfluxDb2CloudProvider(CloudProviderBase):
             print("Batch size not met yet, skipping.")
             return
         print("Sending data to influxdb2")
-        # Batch size has been met, update and clear
-        self.write_api.write(
-            bucket=self.config.influxdb2_bucket,
-            record=self.batch,
-            write_precision=WritePrecision.MS)
-        self.batch.clear()
+        max_retries = getattr(self.config, 'influxdb2_retries', 3)
+        backoff_seconds = getattr(self.config, 'influxdb2_retry_backoff_seconds', 2)
+
+        for attempt in range(1, max_retries + 1):
+            try:
+                self.write_api.write(
+                    bucket=self.config.influxdb2_bucket,
+                    record=self.batch,
+                    write_precision=WritePrecision.MS)
+                print(f"InfluxDB write succeeded on attempt {attempt}.")
+                self.batch.clear()
+                break
+            except Exception as e:
+                print(f"InfluxDB write attempt {attempt} failed: {e}")
+                if attempt < max_retries:
+                    sleep_time = backoff_seconds * (2 ** (attempt - 1))
+                    print(f"Retrying in {sleep_time} seconds...")
+                    try:
+                        import time
+                        time.sleep(sleep_time)
+                    except KeyboardInterrupt:
+                        print("Retry sleep interrupted by user.")
+                        break
+                else:
+                    print("All InfluxDB write attempts failed — keeping batch for later retry.")
 
     def enabled(self):
         return (self.config.influxdb2_url)
