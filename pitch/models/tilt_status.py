@@ -45,7 +45,7 @@ class TiltStatus(JsonSerialize):
     def get_apparent_attenuation(original_gravity, current_gravity):
         if original_gravity is None:
             return 0
-        aa = ((original_gravity - current_gravity) / original_gravity) * 2 * 1000
+        aa = ((original_gravity - current_gravity) / (original_gravity - 1.000))  * 100
         return round(aa, 2)
 
     @staticmethod
